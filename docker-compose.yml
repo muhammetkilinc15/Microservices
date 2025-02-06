@@ -1,0 +1,46 @@
+version: '3.7'
+
+services:
+  s_api_gateway:
+   container_name: c_api_gateway
+   image: muhammetkilinc/api_gateway
+   build:
+        context: .
+        dockerfile: ApiGateWay/Dockerfile
+   ports: 
+        -  80:80
+   networks:
+        - micro_net 
+        - int_net 
+
+  s_contact_api:
+    container_name: c_contact_api  
+    image: muhammetkilinc/contact_api
+    build:
+          context: .
+          dockerfile: Services/ContactAPI/Contact.API/Dockerfile
+    ports:
+          - 9000:9000
+    networks:
+          - int_net
+   
+  s_reservation_api:
+    container_name: r_reservation_api
+    image: muhammetkilinc/reservation_api
+    build:
+          context: .
+          dockerfile: Services/ResAPI/Reservation.API/Dockerfile
+    ports:
+          - 9002:9002
+    networks:
+          - int_net
+
+networks:
+    int_net: 
+         driver: overlay
+         internal: true
+
+    mic_net:
+         driver: bridge
+
+
